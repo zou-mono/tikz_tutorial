@@ -3,7 +3,8 @@
 %%% mode: latex
 %%% TeX-master: t
 %%% End:
-\documentclass[mathserif]{beamer}
+\documentclass[mathserif,xcolor={dvipsnames}]{beamer}
+%\usepackage[dvipsnames]{xcolor}
 \usepackage{tikz}
 \usepackage[T1]{fontenc}
 \usepackage{xeCJK}
@@ -391,6 +392,17 @@ font=\ttfamily}}
                     in (-.5,\y1) -- (3.5,\y1)
                        (-.5,\y2) -- (3.5,\y2)
                        (-.5,\y3) -- (3.5,\y3);
+\end{tikzpicture}  
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{轨道}
+\tikzset{stop/.style={blue,draw,circle,fill=blue,radius=1cm}}
+\tikzset{line/.style={color=SkyBlue,very thick}}
+\begin{tikzpicture}
+\draw [line] (0,0) -- (10,0);
+\foreach \i in {0,1,...,10}{
+    \node at (\i,0) [stop] {};
+}
 \end{tikzpicture}  
 \end{frame}
 \end{document}
