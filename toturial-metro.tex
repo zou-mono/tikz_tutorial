@@ -4,12 +4,12 @@
 %%% End:
 
 \documentclass[border=5]{standalone}
-\usepackage[svgnames]{xcolor}
+\usepackage[x11names,svgnames]{xcolor}
 \usepackage[T1]{fontenc}
 \usepackage{xeCJK}
 \usepackage{tikz}
-\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,
-positioning,fit,shapes.misc,calc}
+\usetikzlibrary{arrows.meta,decorations.pathmorphing,backgrounds,
+positioning,fit,shapes.misc,topaths}
 
 \tikzset{line/.style={
          color=#1,line width=5pt,line join=round,inner sep=0pt}}
@@ -17,64 +17,256 @@ positioning,fit,shapes.misc,calc}
          draw,color=#1,shape=circle,very thick,fill=white,minimum width=0.4cm,inner sep=0pt}}
 \tikzset{stop-terminal/.style={
          draw,color=#1,shape=circle,fill=#1,minimum width=0.5cm,inner sep=0pt}}
+% \tikzset{tranStop/.pic={
+%          \filldraw[fill=white,ultra thick] (0,0) circle [radius=0.3];
+%          \draw[-{Triangle[length=1mm]},very thick,red] (-0.1414,-0.1414) arc (225:405:0.15);}}
+\tikzset{tranStop/.pic={code={
+          \begin{scope}[fill=white,ultra thick,draw=Grey]            
+          \filldraw (-0.3,-0.2) arc (270:90:0.2) -- (0.3,0.2) arc (90:-90:0.2) -- (-0.3,-0.2);
+          \end{scope}}}}
 
 \pgfdeclarelayer{line}
 \pgfdeclarelayer{stop}
-\pgfsetlayers{line,stop}
+\pgfdeclarelayer{tranStop}
+\pgfsetlayers{line,stop,tranStop}
 
 \begin{document}
 \begin{tikzpicture}[
 stop1/.style={stop=DarkGreen},stop1-terminal/.style={stop-terminal=DarkGreen},
-stop2/.style={stop=DarkOrange},stop2-terminal/.style={stop-terminal=DarkOrange}]
+stop2/.style={stop=DarkOrange},stop2-terminal/.style={stop-terminal=DarkOrange},
+stop3/.style={stop=DeepSkyBlue1},stop3-terminal/.style={stop-terminal=DeepSkyBlue1},
+stop4/.style={stop=red},stop4-terminal/.style={stop-terminal=red},
+stop5/.style={stop=DarkOrchid3},stop5-terminal/.style={stop-terminal=DarkOrchid3},
+font=\small,x=1cm,y=1cm]
 
 % 一号线
 \begin{scope}
 \begin{pgfonlayer}{line}
-\draw [line=DarkGreen,rounded corners=2pt] (0,0) -- (0,-5) -- (1,-6) -- (1,-9) -- (3,-9) -- (24.75,-9) -- (28,-5.8) -- (28,-12.8);
+\draw [line=DarkGreen,rounded corners=2pt] (0,0) -- (0,-5) -- (1,-6) -- (1,-9) -- (3,-9) -- (24.75,-9) -- (28.2,-5.8) -- (28.2,-12.8);
 \end{pgfonlayer}
 \begin{pgfonlayer}{stop}
-\node at (0,0) [stop1-terminal] {};
-\foreach \i in {-1,-2,...,-5} {\node at (0,\i) [stop1] {};} 
-\foreach \i in {-6,-7.5,-9} {\node at (1,\i) [stop1] {};} %宝安中心,新安,前海湾
-\foreach \i in {3,4,...,9} {\node at (\i,-9) [stop1] {};} %世界之窗
-\foreach \i in {11,12.5,14,16.1} {\node at (\i,-9) [stop1] {};} %车公庙
-\foreach \i in {17.35,18.55,20.05,21.25,23.25,24.25} {\node at (\i,-9) [stop1] {};} %科学馆
-\node at (26.51,-7.25) [stop1] {}; %大剧院
-\node at (28,-5.8) [stop1] {}; %老街
-\node at (28,-9.8) [stop1] {}; %国贸
-\node at (28,-12.8) [stop1-terminal] {};
+\node at (0,0) [stop1-terminal] (jichangdong) [label=right:机场东]{}; %机场东
+\node at (0,-1) [stop1] (hourui) [label=right:后瑞]{}; %后瑞
+\node at (0,-2) [stop1] (gushu) [label=right:固戍]{}; %固戍
+\node at (0,-3) [stop1] (xixiang) [label=right:西乡]{}; %西乡
+\node at (0,-4) [stop1] (pingzhou) [label=right:坪洲]{}; %坪洲
+\node at (0,-5) [stop1] (baoti) [label=right:宝体]{}; %宝体
+\pic [local bounding box=baoanzhongxin] at (1,-6) {tranStop}; %宝安中心
+\node [right] at (baoanzhongxin.east) {宝安中心};
+\node at (1,-7.5) [stop1] (xinan) [label=right:新安]{}; %新安
+\pic [local bounding box=qianhaiwan] at (1,-9) {tranStop}; %宝安中心
+\node [below left] at (qianhaiwan.south) {前海湾};
+\node at (3,-9) [stop1] (liyumen) {}; %鲤鱼门
+\node [above,text width=1em] at (liyumen.north) {鲤鱼门}; 
+\node at (4,-9) [stop1] (daxin){}; %大新
+\node [above,text width=1em] at (daxin.north) {大新}; 
+\node at (5,-9) [stop1] (taoyuan) {}; %桃园
+\node [above,text width=1em] at (taoyuan.north) {桃园}; 
+\node at (6,-9) [stop1] (shenda){}; %深大
+\node [above,text width=1em] at (shenda.north) {深大}; 
+\node at (7,-9) [stop1] (gaoxinyuan){}; %高新园
+\node [above,text width=1em] at (gaoxinyuan.north) {高新园}; 
+\node at (8,-9) [stop1] (baishizhou) {}; %白石洲
+\node [above,text width=1em] at (baishizhou.north) {白石洲}; 
+\pic [local bounding box=shijiezhichuang] at (9,-9) {tranStop}; %世界之窗
+\node [below right,text width=1em] at (shijiezhichuang.south) {世界之窗};
+\node at (11,-9) [stop1] (huaqiaocheng){}; %华侨城
+\node [above,text width=1em] at (huaqiaocheng.north) {华侨城}; 
+\node at (12.5,-9) [stop1] (qiaochengdong){}; %侨城东
+\node [below,text width=1em] at (qiaochengdong.south) {侨城东};
+\node at (14,-9) [stop1] (zhuzilin){}; %竹子林
+\node [below,text width=1em] at (zhuzilin.south) {竹子林};
+\pic [local bounding box=chegongmiao] at (16.1,-9) {tranStop}; %车公庙
+\node [text width=1em] at ([shift={(-.5,-.65)}]chegongmiao.south) {车公庙};
+\node at (17.35,-9) [stop1] (xiangmihu){}; %香蜜湖
+\node [below,text width=1em] at (xiangmihu.south) {香蜜湖};
+\pic [local bounding box=gouwugongyuan] at (18.55,-9) {tranStop}; %购物公园
+\node [below right,text width=1em] at (gouwugongyuan.south) {购物公园}; 
+\pic [local bounding box=huizhanzhongxin] at (20.25,-9) {tranStop}; %会展中心
+\node [below right] at (huizhanzhongxin.south) {会展中心}; 
+\node at (21.55,-9) [stop1] (gangxia){}; %岗厦
+\node [above] at (gangxia.north) {岗厦};
+\node at (23.25,-9) [stop1] (huaqianglu){}; %华强路
+\node [above] at (huaqianglu.north) {华强路};
+\node at (24.25,-9) [stop1] (kexueguan){}; %科学馆
+\node [above,text width=1em] at (kexueguan.north) {科学馆};
+\pic [local bounding box=dajuyuan] at (26.51,-7.25) {tranStop}; %大剧院
+\node [above left,text width=1em] at (dajuyuan.north) {大剧院}; 
+\pic [local bounding box=laojie,rotate=90] at (28.2,-5.5) {tranStop}; %老街
+\node [right] at (laojie.east) {老街}; 
+\node at (28.2,-9.8) [stop1] (guomao) [label=right:国贸]{}; %国贸
+\node at (28.2,-12.8) [stop1-terminal] (luohu)[label=right:罗湖]{};
 \end{pgfonlayer} 
 \end{scope} 
 
 % 二号线
 \begin{scope}[shift={(-2.68,-17.25)}]
 \begin{pgfonlayer}{line}
-\draw [line=DarkOrange,rounded corners=10pt] (0,0) -- (1.4,-1.4) -- (7.68,4.68) -- (7.68,6.68)
+\draw [line=DarkOrange,rounded corners=10pt] (0,0) -- (1.414,-1.414) -- (7.68,4.852) -- (7.68,6.68)
 -- (11.68,6.68) -- (11.68,10) -- (34,10);
 \end{pgfonlayer}
 \begin{pgfonlayer}{stop}
-\node at (0,0) [stop2-terminal] {};
-\node at (1,-1) [stop2] {};
-\foreach \i in {1,2,...,5} {\node at (1.4+\i*1.05,-1.4+\i*1.03) [stop2] {};}
-\node at (7.68,4.68) [stop2] {}; %后海
-\node at (8.5,6.68) [stop2] {};
-\node at (10,6.68) [stop2] {}; %世界之窗
-\node at (12,10) [stop2] {}; %侨城北
-\node at (13,10) [stop2] {}; %深康
-\node at (14.5,10) [stop2] {};%安托山
-\node at (15.5,10) [stop2] {};%侨香
-\node at (16.5,10) [stop2] {}; %香蜜
-\node at (17.5,10) [stop2] {}; %香梅北
-\node at (18.78,10) [stop2] {}; %景田
-\node at (20.03,10) [stop2] {}; %莲花西
-\node at (21.23,10) [stop2] {}; %福田
-\node at (22.73,10) [stop2] {}; %市民中心
-\node at (23.93,10) [stop2] {}; %岗厦北
-\node at (25.68,10) [stop2] {}; %华强北
-\node at (27.43,10) [stop2] {}; %燕南
-\node at (29.19,10) [stop2] {}; %大剧院
-\node at (31.5,10) [stop2] {}; %湖贝
-\node at (34,10) [stop2-terminal] {}; %新秀 
+\node at (0,0) [stop2-terminal] (chiwan) [label=above right:赤湾]{}; %赤湾
+\node at (1,-1) [stop2] (shekougang) [label=below left:蛇口港]{}; %蛇口港
+\node at (2.22,-0.6) [stop2] (haishangshijie) [label=below right:海上世界]{}; %海上世界
+\node at (3.12,0.3) [stop2] (shuiwan) [label=below right:水湾]{}; %水湾
+\node at (4.02,1.2) [stop2] (dongjiaotou) [label=below right:东角头]{}; %东角头
+\node at (4.92,2.1) [stop2] (wanxia) [label=below right:湾厦]{}; %湾厦
+\node at (5.82,3) [stop2] (haiyue) [label=below right:海月]{}; %海月
+\node at (6.72,3.9) [stop2] (dengliang) [label=below right:登良]{}; %登良
+\pic [local bounding box=houhai] at (7.68,4.852) {tranStop}; %后海
+\node [below right] at (houhai.east) {后海};
+\node at (8.5,6.68) [stop2] (keyuan) [label=above:科苑]{}; %科苑
+\node at (10,6.68) [stop2] (hongshuwan) [label=above:红树湾]{}; %红树湾
+\node at (12,10) [stop2] (qiaochengbei){}; %侨城北
+\node [above,text width=1em] at (qiaochengbei.north) {侨城北};
+\node at (13,10) [stop2] (shenkang){}; %深康
+\node [above,text width=1em] at (shenkang.north) {深康};
+\pic [local bounding box=antuoshan] at (14.5,10) {tranStop}; %安托山
+\node [above left,text width=1em] at (antuoshan.north) {安托山};
+\node at (15.5,10) [stop2] (qiaoxiang) {};%侨香
+\node [above,text width=1em] at (qiaoxiang.north) {侨香};
+\node at (16.5,10) [stop2] (xiangmi){}; %香蜜
+\node [above,text width=1em] at (xiangmi.north) {香蜜};
+\node at (17.5,10) [stop2] (xiangmeibei){}; %香梅北
+\node [above,text width=1em] at (xiangmeibei.north) {香梅北};
+\pic [local bounding box=jingtian] at (18.78,10) {tranStop}; %景田
+\node [above right,text width=1em] at (jingtian.north) {景田};
+\node at (20.03,10) [stop2] (lianhuaxi){}; %莲花西
+\node [above,text width=1em] at (lianhuaxi.north) {莲花西};
+\pic [local bounding box=futian] at (21.23,10) {tranStop}; %福田
+\node [above left,text width=1em] at (futian.north) {福田};
+\pic [local bounding box=shiminzhongxin] at (22.93,10) {tranStop}; %市民中心
+\node [below right] at (shiminzhongxin.south) {市民中心};
+\node at (24.23,10) [stop2] (gangxiabei){}; %岗厦北
+\node [above] at (gangxiabei.north) {岗厦北};
+\pic [local bounding box=huaqiangbei] at (25.68,10) {tranStop}; %华强北
+\node [above right,text width=1em] at (huaqiangbei.north) {华强北};
+\node at (27.43,10) [stop2] (yannan){}; %燕南
+\node [above,text width=1em] at (yannan.north) {燕南};
+%\node at (29.19,10) [stop2] {}; %大剧院
+\node at (31.5,10) [stop2] (hubei){}; %湖贝
+\node [above,text width=1em] at (hubei.north) {湖贝};
+\pic [local bounding box=huangbeiling] at (32.9,10) {tranStop}; %黄贝岭
+\node [below,text width=1em] at (huangbeiling.south) {黄贝岭};
+\node at (34,10) [stop2-terminal] (xinxiu)[label=below:新秀]{}; %新秀 
+\end{pgfonlayer}
+\end{scope}
+
+% 三号线
+\begin{scope}[shift={(18.55,-14)}]
+\begin{pgfonlayer}{line}
+\draw [line=DeepSkyBlue1,rounded corners=5pt] (0,0) -- (0,7.5) -- (1.15,8.5) -- (9.65,8.5)
+-- (9.65,18.75) -- (16.65,25.75) -- (17.65,25.75);
+\end{pgfonlayer}
+
+\begin{pgfonlayer}{stop}
+\node at (0,0) [stop3-terminal] (yitian)[label=left:益田]{}; %益田
+\pic [local bounding box=shixia] at (0,2.5) {tranStop}; %s石厦
+\node [below left] at (shixia.south) {石厦};
+\pic [local bounding box=shaoniangong] at (1.65,8.5) {tranStop}; %s少年宫
+\node [above left] at (shaoniangong.north) {少年宫};
+\node at (2.95,8.5) [stop3] (lianhuacun)[label=above:莲花村]{}; %莲花村
+\pic [local bounding box=huaxin] at (4.4,8.5) {tranStop}; %s华新
+\node [above right,text width=1em] at (huaxin.north) {华新};
+\node at (6.15,8.5) [stop3] (tongxinling)[label=above:通新岭]{}; %通新岭
+\pic [local bounding box=hongling] at (7.35,8.5) {tranStop}; %s红岭
+\node [above right] at (hongling.north) {红岭};
+\node at (9.65,9.5) [stop3] (shanbu)[label=right:晒布]{}; %晒布
+\node at (9.65,10.25) [stop3] (cuizhu)[label=right:翠竹]{}; %翠竹
+\pic [local bounding box=tianbei] at (9.65,11.5) {tranStop}; %田贝
+\node at ([shift={(0.15,0.4)}]tianbei.east) {田贝};
+\node at (9.65,13) [stop3] (shuibei)[label=right:水贝]{}; %水贝
+\node at (9.65,14) [stop3] (caopu)[label=right:草埔]{}; %草埔
+\pic [local bounding box=buji] at (9.65,15.25) {tranStop}; %布吉
+\node at ([shift={(0.15,0.4)}]buji.east) {布吉};
+\node at (9.65,16.75) [stop3] (mumianwan)[label=right:木棉湾]{}; %木棉湾
+\node at (9.65,17.75) [stop3] (dafen)[label=right:大芬]{}; %大芬
+\node at (9.65,18.75) [stop3] (danzhutou)[label=right:丹竹头]{}; %丹竹头
+\node at (10.35,19.45) [stop3] (liuyue)[label=right:六约]{}; %六约
+\node at (11.05,20.15) [stop3] (tangkeng)[label=right:塘坑]{}; %塘坑
+\node at (11.75,20.85) [stop3] (henggang)[label=right:横岗]{}; %横岗
+\node at (12.45,21.55) [stop3] (yonghu)[label=right:永湖]{}; %永湖
+\node at (13.15,22.25) [stop3] (heao)[label=right:荷坳]{}; %荷坳
+\node at (13.85,22.95) [stop3] (dayun)[label=right:大运]{}; %大运
+\node at (14.55,23.65) [stop3] (ailian)[label=right:爱联]{}; %爱联
+\node at (15.25,24.35) [stop3] (jixiang)[label=right:吉祥]{}; %吉祥
+\node at (15.95,25.05) [stop3] (longchengguangchang)[label=right:龙城广场]{}; %龙城广场
+\node at (16.65,25.75) [stop3] (nanlian)[label=above:南联]{}; %南联
+\node at (17.65,25.75) [stop3-terminal] (shuanglong)[label=above:双龙]{}; %双龙
+\end{pgfonlayer}
+\end{scope}
+
+% 四号线
+\begin{scope}[shift={(20.25,-12.75)}]
+\begin{pgfonlayer}{line}
+\draw [line=red,rounded corners=5pt] (0,0) -- (0,17.5) -- (2.1,19.6);
+\end{pgfonlayer}
+
+\begin{pgfonlayer}{stop}
+\node at (0,0) [stop4-terminal] (futiankouan)[label=below:福田口岸]{}; %福田口岸
+\pic [local bounding box=fumin] at (0,1.25) {tranStop}; %福民
+\node [right] at (fumin.east) {福民};
+\node at (0,9.25) [stop4] (lianhuabei)[label=right:莲花北]{}; %莲花北
+\pic [local bounding box=shangmeilin] at (0,10.25) {tranStop}; %上梅林
+\node at ([shift={(0.3,0.4)}]shangmeilin.east) {上梅林};
+\node at (0,11.25) [stop4] (minle)[label=left:民乐]{}; %民乐
+\node at (0,12.25) [stop4] (baishilong)[label=left:白石龙]{}; %白石龙
+\pic [local bounding box=shenzhenbeizhan] at (0,14) {tranStop}; %深圳北站
+\node [below right] at (shenzhenbeizhan.south) {深圳北站};
+\node at (0,15.5) [stop4] (hongshan)[label=right:红山]{}; %红山
+\node at (0,17) [stop4] (shangtang)[label=right:上塘]{}; %上塘
+\node at (0.7,18.2) [stop4] (longsheng)[label=right:龙胜]{}; %龙胜
+\node at (1.4,18.9) [stop4] (longhua)[label=right:龙华]{}; %龙华
+\node at (2.1,19.6) [stop4-terminal] (qinghu)[label=right:清湖]{}; %清湖
+\end{pgfonlayer}
+\end{scope}
+
+% 五号线
+\begin{scope}[shift={(30.22,-7.25)}]
+\begin{pgfonlayer}{line}
+\draw [line=DarkOrchid3,rounded corners=5pt] (0,0) -- (0,6.4) -- (-1.98,8.5) -- (-21.97,8.5)
+-- (-29.22,1.25) -- (-31.1,-0.75) ..controls(-31.4,-1.1) and (-31.4,-1.4)..(-31.1,-1.75) --(-29.22,-1.75);
+\end{pgfonlayer}
+
+\begin{pgfonlayer}{stop}
+%\node at (0,0) [stop5-terminal] (huangbeiling)[label=below:黄贝岭]{}; %黄贝岭
+\node at (0,1) [stop5] (yijing)[label=right:怡景]{}; %怡景
+\pic [local bounding box=taian] at (0,2.5) {tranStop}; %太安
+\node [right] at (taian.east) {太安};
+\node at (0,4) [stop5] (buxin)[label=right:布心]{}; %布心
+\node at (0,5.5) [stop5] (baigelong)[label=right:百鸽笼]{}; %百鸽笼
+\node at (-2.93,8.5) [stop5] (changlong){}; %长龙
+\node [above,text width=1em] at (changlong.north) {长龙};
+\node at (-3.93,8.5) [stop5] (xiashuijing){}; %下水径
+\node [above,text width=1em] at (xiashuijing.north) {下水径};
+\node at (-4.93,8.5) [stop5] (shangshuijing){}; %上水径
+\node [above,text width=1em] at (shangshuijing.north) {上水径};
+\node at (-5.93,8.5) [stop5] (shangshuijing){}; %杨美
+\node [above,text width=1em] at (shangshuijing.north) {杨美};
+\node at (-6.93,8.5) [stop5] (bantian){}; %坂田
+\node [above,text width=1em] at (bantian.north) {坂田};
+\node at (-7.93,8.5) [stop5] (wuhe){}; %五和
+\node [above,text width=1em] at (wuhe.north) {五和};
+\node at (-8.93,8.5) [stop5] (minzhi){}; %民治
+\node [above,text width=1em] at (minzhi.north) {民治};
+\node at (-11.43,8.5) [stop5] (changlingpi){}; %长岭陂
+\node [above,text width=1em] at (changlingpi.north) {长岭陂};
+\node at (-12.68,8.5) [stop5] (tanglang){}; %塘朗
+\node [above,text width=1em] at (tanglang.north) {塘朗};
+\node at (-13.93,8.5) [stop5] (daxuecheng){}; %大学城
+\node [above,text width=1em] at (daxuecheng.north) {大学城};
+\pic [local bounding box=xili] at (-15.93,8.5) {tranStop}; %西丽
+\node [text width=1em] at  ([shift={(-0.3,0.5)}]xili.north) {西丽};
+\node at (-18.43,8.5) [stop5] (liuxiandong){}; %留仙洞
+\node [above,text width=1em] at (liuxiandong.north) {留仙洞};
+\node at (-20.68,8.5) [stop5] (xingdong){}; %兴东
+\node [above,text width=1em] at (xingdong.north) {兴东};
+\node at (-22.47,8) [stop5] (honglangbei)[label=left:洪浪北]{}; %洪浪北
+\node at (-24.72,5.75) [stop5] (lingzhi)[label=left:灵芝]{}; %灵芝
+\node at (-26.97,3.5) [stop5] (fanshen)[label=left:翻身]{}; %翻身
+\node at (-31.1,-0.75) [stop5] (baohua)[label=left:宝华]{}; %宝华
+\node at (-30.47,-1.75) [stop5] (linhai)[label=below left:临海]{}; %临海
 \end{pgfonlayer}
 \end{scope}
 
